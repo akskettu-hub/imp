@@ -1,3 +1,5 @@
 .venv/
 .env
 tokens.json
+processing/input/
+processing/output/
