@@ -6,12 +6,12 @@ import jwt  # pip install pyjwt
 from jwt import PyJWKClient
 
 
-def saveTokens(access_token, refresh_token, path="legacy_tokens.json"):
+def saveTokens(access_token, refresh_token, path="tokens.json"):
     with open(path, "w") as f:
         json.dump({"access_token": access_token, "refresh_token": refresh_token}, f)
 
 
-def loadTokens(path="legacy_tokens.json"):
+def loadTokens(path="tokens.json"):
     if os.path.exists(path):
         with open(path) as f:
             return json.load(f)
@@ -29,7 +29,7 @@ def getAccessToken():
         "grant_type": "password",
         "username": os.getenv("TRANSKRIBUS_USERNAME"),
         "password": os.getenv("PASSWORD"),
-        "client_id": "transkribus-api-client",
+        "client_id": "processing-api-prod-swagger",
     }
 
     headers = {
@@ -133,95 +133,11 @@ def test():
     print(payload)
 
 
-def getCollections():
-    print("getting collections:")
-
-    access_token = handleAccess()
-    url = "https://transkribus.eu/TrpServer/rest/collections"
-    print(url)
-
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-    }
-    # print(headers)
-
-    response = requests.get(url, headers=headers, timeout=30)
-
-    print("Status:", response.status_code)
-    print("Body preview:", response.text)
-
-
-def getDocument():
-    print("getting documents:")
-
-    access_token = handleAccess()
-    url = "https://transkribus.eu/TrpServer/rest/collections/2197393/11313899/fulldoc"
-    print(url)
-
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-    }
-    # print(headers)
-
-    response = requests.get(url, headers=headers, timeout=30)
-
-    # print("Status:", response.status_code)
-    # print("Body:", response.text)
-
-    response.raise_for_status()
-
-    payload = response.json()
-    print(json.dumps(payload, indent=4))
-
-
-def getJob():
-    print("getting collections:")
-
-    access_token = handleAccess()
-    url = "https://transkribus.eu/TrpServer/rest/jobs/18833341"
-    print(url)
-
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-    }
-    # print(headers)
-
-    response = requests.get(url, headers=headers, timeout=30)
-
-    # print("Status:", response.status_code)
-    # print("Body:", response.text)
-
-    response.raise_for_status()
-
-    payload = response.json()
-    print(json.dumps(payload, indent=4))
-
-
-def getDocumentXML():
-    print("getting doc xml:")
-
-    access_token = handleAccess()
-    url = "https://transkribus.eu/TrpServer/rest/collections/2197393/11313899/1/list"
-    print(url)
-
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-    }
-    # print(headers)
-
-    response = requests.get(url, headers=headers, timeout=30)
-
-    print("Status:", response.status_code)
-    print("Body:", response.text)
-
-
 if __name__ == "__main__":
     # getAccessToken()
     # refreshAccessToken()	18833341
     # test = handleAccess()
     # print(test)
-    getAccessToken()
-    # getJobStatus(18833341)
+    # getAccessToken()
+    getJobStatus(18833341)
     # test()
-    # getCollections()
-    getDocumentXML()

@@ -1,6 +1,7 @@
 .venv/
 .env
 tokens.json
+legacy_tokens.json
 processing/input/
 processing/output/
 processing/postp_input/
