@@ -1,7 +1,13 @@
+# local envs
 .venv/
 .env
+pyrightconfig.json
+
+#tokens
 tokens.json
 legacy_tokens.json
+
+#proccessing input and output folders
 processing/input/
 processing/output/
 processing/postp_input/
