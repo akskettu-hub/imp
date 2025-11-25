@@ -12,3 +12,7 @@ processing/input/
 processing/output/
 processing/postp_input/
 processing/postp_output/
+postp_input/
+postp_output/
+processing/__pycache__/
+test_input/
