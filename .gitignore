@@ -16,3 +16,4 @@ postp_input/
 postp_output/
 processing/__pycache__/
 test_input/
+processing/transcriptions/

@@ -6,7 +6,6 @@ from processing.postproc import (
 
 
 def cmd_post_init(args):
-    print(f"Creating input directory: {args.directory}")
     create_input_folder(args.directory)
 
 
