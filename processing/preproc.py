@@ -1,7 +1,6 @@
 import os
 import cv2
 from datetime import datetime
-import matplotlib.pyplot as plt
 import numpy as np
 
 
@@ -30,41 +29,39 @@ def greyscale(in_file_name, out_path):
     img = cv2.imread(f"input/{in_file_name}")
 
     greyscale_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # _, thresh = cv2.threshold(greyscale_img, 127, 255, cv2.THRESH_BINARY)
-    thresh_adp = cv2.adaptiveThreshold(
-        greyscale_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
-    )
+    _, thresh = cv2.threshold(greyscale_img, 127, 255, cv2.THRESH_BINARY)
+    # thresh_adp = cv2.adaptiveThreshold(
+    # greyscale_img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+    # )
 
     cv2.imwrite(f"{out_path}/grayscale_{in_file_name}", greyscale_img)
-    cv2.imwrite(f"{out_path}/thresh_{in_file_name}", thresh_adp)
+    cv2.imwrite(f"{out_path}/thresh_{in_file_name}", thresh)
 
 
-def brightness(in_file_name, out_path):
+def increase_contrast(in_file_name, out_path, alpha=1.2, beta=0):
     # Load the image
-    image = cv2.imread("input/{in_file_name}")
+    image = cv2.imread(f"input/{in_file_name}")
+    contrasted_img = cv2.convertScaleAbs(image, alpha=alpha, beta=beta)
 
-    # Plot the original image
-    plt.subplot(1, 2, 1)
-    plt.title("Original")
-    plt.imshow(image)
+    cv2.imwrite(f"{out_path}/contrast_{in_file_name}", contrasted_img)
 
-    # Adjust the brightness and contrast
-    # Adjusts the brightness by adding 10 to each pixel value
-    brightness = 10
-    # Adjusts the contrast by scaling the pixel values by 2.3
-    contrast = 2.3
-    image2 = cv2.addWeighted(
-        image, contrast, np.zeros(image.shape, image.dtype), 0, brightness
-    )
 
-    # Save the image
-    cv2.imwrite("modified_image.jpg", image2)
+def sharpen_image(in_file_name, out_path):
+    image = cv2.imread(f"input/{in_file_name}")
 
-    # Plot the contrast image
-    plt.subplot(1, 2, 2)
-    plt.title("Brightness & contrast")
-    plt.imshow(image2)
-    plt.show()
+    kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]])
+
+    sharpened_image = cv2.filter2D(image, -1, kernel)
+
+    cv2.imwrite(f"{out_path}/sharpened_{in_file_name}", sharpened_image)
+
+
+def denoise_image(in_file_name, out_path, ksize=5):
+    image = cv2.imread(f"input/{in_file_name}")
+
+    denoised_image = cv2.GaussianBlur(image, (ksize, ksize), 0)
+
+    cv2.imwrite(f"{out_path}/denoised_{in_file_name}", denoised_image)
 
 
 def process_images(out_path):
@@ -72,6 +69,9 @@ def process_images(out_path):
 
     for file_name in input_file_names:
         greyscale(in_file_name=file_name, out_path=out_path)
+        increase_contrast(in_file_name=file_name, out_path=out_path)
+        sharpen_image(in_file_name=file_name, out_path=out_path)
+        denoise_image(in_file_name=file_name, out_path=out_path)
 
 
 if __name__ == "__main__":
