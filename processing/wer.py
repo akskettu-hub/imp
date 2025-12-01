@@ -46,13 +46,7 @@ if __name__ == "__main__":
     # b = "This is a test. Trying to eat some beans."
     # res = wer(ref=a, hyp=b)
     res = wer_from_files(
-        ref_path="transcriptions/CLIFT_024.txt",
-        hyp_path="transcriptions/clift_024_nop.txt",
+        ref_path="transcriptions/test1.txt",
+        hyp_path="transcriptions/CLIFT_02_up.txt",
     )
     print("No processing: ", 1 - res)
-
-    res = wer_from_files(
-        ref_path="transcriptions/CLIFT_024.txt",
-        hyp_path="transcriptions/clift_024_grey.txt",
-    )
-    print("Greyscale: ", 1 - res)

@@ -1,6 +1,8 @@
 import os
 import cv2
 from datetime import datetime
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def create_output_folder():
@@ -35,6 +37,34 @@ def greyscale(in_file_name, out_path):
 
     cv2.imwrite(f"{out_path}/grayscale_{in_file_name}", greyscale_img)
     cv2.imwrite(f"{out_path}/thresh_{in_file_name}", thresh_adp)
+
+
+def brightness(in_file_name, out_path):
+    # Load the image
+    image = cv2.imread("input/{in_file_name}")
+
+    # Plot the original image
+    plt.subplot(1, 2, 1)
+    plt.title("Original")
+    plt.imshow(image)
+
+    # Adjust the brightness and contrast
+    # Adjusts the brightness by adding 10 to each pixel value
+    brightness = 10
+    # Adjusts the contrast by scaling the pixel values by 2.3
+    contrast = 2.3
+    image2 = cv2.addWeighted(
+        image, contrast, np.zeros(image.shape, image.dtype), 0, brightness
+    )
+
+    # Save the image
+    cv2.imwrite("modified_image.jpg", image2)
+
+    # Plot the contrast image
+    plt.subplot(1, 2, 2)
+    plt.title("Brightness & contrast")
+    plt.imshow(image2)
+    plt.show()
 
 
 def process_images(out_path):

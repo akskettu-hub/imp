@@ -17,3 +17,4 @@ postp_output/
 processing/__pycache__/
 test_input/
 processing/transcriptions/
+results.csv
